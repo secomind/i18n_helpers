@@ -68,8 +68,12 @@ if Code.ensure_loaded?(Ecto) do
           only: [
             translatable_field: 1,
             translatable_belongs_to: 2,
+            translatable_belongs_to: 3,
             translatable_has_many: 2,
+            translatable_has_many: 3,
             translatable_has_one: 2,
+            translatable_has_one: 3,
+            translatable_many_to_many: 2,
             translatable_many_to_many: 3
           ]
 
@@ -123,9 +127,9 @@ if Code.ensure_loaded?(Ecto) do
 
     The macro will add the given field name into the translatable associations list.
     """
-    defmacro translatable_belongs_to(field_name, module_name) do
+    defmacro translatable_belongs_to(field_name, module_name, opts \\ []) do
       quote do
-        belongs_to(unquote(field_name), unquote(module_name))
+        belongs_to(unquote(field_name), unquote(module_name), unquote(opts))
 
         Module.put_attribute(__MODULE__, :translatable_assocs, unquote(field_name))
       end
@@ -136,9 +140,9 @@ if Code.ensure_loaded?(Ecto) do
 
     The macro will add the given field name into the translatable associations list.
     """
-    defmacro translatable_has_many(field_name, module_name) do
+    defmacro translatable_has_many(field_name, module_name, opts \\ []) do
       quote do
-        has_many(unquote(field_name), unquote(module_name))
+        has_many(unquote(field_name), unquote(module_name), unquote(opts))
 
         Module.put_attribute(__MODULE__, :translatable_assocs, unquote(field_name))
       end
@@ -149,9 +153,9 @@ if Code.ensure_loaded?(Ecto) do
 
     The macro will add the given field name into the translatable associations list.
     """
-    defmacro translatable_has_one(field_name, module_name) do
+    defmacro translatable_has_one(field_name, module_name, opts \\ []) do
       quote do
-        has_one(unquote(field_name), unquote(module_name))
+        has_one(unquote(field_name), unquote(module_name), unquote(opts))
 
         Module.put_attribute(__MODULE__, :translatable_assocs, unquote(field_name))
       end
@@ -164,7 +168,7 @@ if Code.ensure_loaded?(Ecto) do
     """
     defmacro translatable_many_to_many(field_name, module_name, opts \\ []) do
       quote do
-        many_to_many(unquote(field_name), unquote(module_name), unquote(opts))
+        many_to_many(unquote(field_name), unquote(module_name), unquote(opts), unquote(opts))
 
         Module.put_attribute(__MODULE__, :translatable_assocs, unquote(field_name))
       end
